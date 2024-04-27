@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Input Nilai Mata Kuliah</title>
+<link rel="stylesheet" type="text/css" href="mycss.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+    }
+    h2 {
+        color: #333;
+    }
+    p {
+        margin-top: 10px;
+    }
+    input[type="text"],
+    input[type="number"],
+    button {
+        padding: 10px;
+        margin-top: 5px;
+        border: none;
+        border-radius: 5px;
+        background-color: #c7acce;
+        color: white;
+        cursor: pointer;
+    }
+    input[type="text"],
+    input[type="number"] {
+        width: 200px;
+    }
+    button {
+        width: 100px;
+    }
+    button:hover {
+        background-color: #8b0280;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    table, th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+    th {
+        background-color: #a54bc0;
+        color: white;
+    }
+    #report {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border-radius: 5px;
+    }
+</style>
+</head>
+<body>
+
+<h2>Input Nilai Mata Kuliah</h2>
+
+<p>Masukkan Nama Mata Kuliah dan Nilai:</p>
+<input type="text" id="mataKuliah" placeholder="Nama Mata Kuliah">
+<input type="number" id="nilai" placeholder="Nilai">
+<button id="tambah">Tambah</button>
+
+<table id="tabelNilai">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Nama Mata Kuliah</th>
+            <th>Nilai</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Data akan dimasukkan di sini menggunakan JavaScript -->
+    </tbody>
+</table>
+
+<div id="report">
+    <h3>Report</h3>
+    <button id="updateTotalScore">Update Total Score</button>
+    <button id="updateRataNilai">Update Rata-rata Nilai</button>
+    <button id="updateNilaiTerbesar">Update Nilai Terbesar</button>
+    <button id="updateNilaiTerkecil">Update Nilai Terkecil</button>
+    <p>Total Score: <span id="totalScore">0</span></p>
+    <p>Rata-rata Nilai: <span id="rataNilai">0</span></p>
+    <p>Nilai Terbesar: <span id="nilaiTerbesar">0</span></p>
+    <p>Nilai Terkecil: <span id="nilaiTerkecil">0</span></p>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var nilaiList = []; // Array untuk menyimpan nilai
+
+    document.getElementById('tambah').addEventListener('click', function(){
+        var mataKuliah = document.getElementById('mataKuliah').value;
+        var nilai = parseInt(document.getElementById('nilai').value);
+
+        // Tambahkan data ke dalam tabel
+        var tableRef = document.getElementById('tabelNilai').getElementsByTagName('tbody')[0];
+        var newRow = tableRef.insertRow();
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+        cell1.innerHTML = nilaiList.length + 1;
+        cell2.innerHTML = mataKuliah;
+        cell3.innerHTML = nilai;
+
+        // Tambahkan nilai ke dalam array
+        nilaiList.push(nilai);
+    });
+
+    document.getElementById('updateTotalScore').addEventListener('click', function(){
+        // Update total score
+        document.getElementById('totalScore').textContent = calculateTotalScore();
+    });
+
+    document.getElementById('updateRataNilai').addEventListener('click', function(){
+        // Update rata-rata nilai
+        document.getElementById('rataNilai').textContent = calculateRataNilai().toFixed(2);
+    });
+
+    document.getElementById('updateNilaiTerbesar').addEventListener('click', function(){
+        // Update nilai terbesar
+        document.getElementById('nilaiTerbesar').textContent = calculateNilaiTerbesar();
+    });
+
+    document.getElementById('updateNilaiTerkecil').addEventListener('click', function(){
+        // Update nilai terkecil
+        document.getElementById('nilaiTerkecil').textContent = calculateNilaiTerkecil();
+    });
+
+    function calculateTotalScore() {
+        var totalScore = 0;
+        for (var i = 0; i < nilaiList.length; i++) {
+            totalScore += nilaiList[i];
+        }
+        return totalScore;
+    }
+
+    function calculateRataNilai() {
+        if (nilaiList.length === 0) return 0;
+        var totalScore = calculateTotalScore();
+        return totalScore / nilaiList.length;
+    }
+
+    function calculateNilaiTerbesar() {
+        if (nilaiList.length === 0) return 0;
+        return Math.max.apply(Math, nilaiList);
+    }
+
+    function calculateNilaiTerkecil() {
+        if (nilaiList.length === 0) return 0;
+        return Math.min.apply(Math, nilaiList);
+    }
+});
+</script>
+
+</body>
+
+</html>
